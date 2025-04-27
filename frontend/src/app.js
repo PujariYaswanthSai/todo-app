@@ -16,12 +16,12 @@ const App = () => {
     })
     const [selectedTask, setSelectedTask] = useState(null)
 
-    axios.defaults.baseURL = "http://127.0.0.1:8000/api"
+    axios.defaults.baseURL = "http://127.0.0.1:8000"
 
     // Fetch all data
     const fetchData = async () => {
         try {
-            const response = await axios.get('/todos/');
+            const response = await axios.get('/api/todos/');
             setTaskList(response.data)
             // console.log(response)
         } catch (error) {
@@ -36,7 +36,7 @@ const App = () => {
     // Fetch Filtered Data
     const fetchFilteredData = async (value) => {
         try {
-            const response = await axios.get(`/todos/${value}/filter`);
+            const response = await axios.get(`/api/todos/${value}/filter/`);
             setTaskList(response.data)
             // console.log(response)
         } catch (error) {
@@ -45,11 +45,11 @@ const App = () => {
     }
 
     const handleInputChange = (e) => {
-        setNewTask({... newTask, [e.target.name]: e.target.value})
+        setNewTask({...newTask, [e.target.name]: e.target.value})
     }
 
     const handleInputSelectChange = (e) => {
-        setSelectedTask({... selectedTask, [e.target.name]: e.target.value})
+        setSelectedTask({...selectedTask, [e.target.name]: e.target.value})
     }
 
     // add new item
@@ -60,21 +60,22 @@ const App = () => {
         }
 
         try {
-            await axios.post('/todos/', newTask);
+            console.log('Sending POST request with data:', newTask);
+            const response = await axios.post('/api/todos/', newTask);
+            console.log('POST response:', response.data);
             fetchData();
             setNewTask({
-                    'description' : "",
-                    'completed' : false
-                })
-                
+                'description': "",
+                'completed': false
+            });
         } catch (error) {
-            console.error('Error Encountered: ', error)
+            console.error('Error adding new item:', error.response ? error.response.data : error);
         }
     }
 
     const updateItem = async () => {
         try {
-            await axios.put(`/todos/${selectedTask.id}/`, selectedTask)
+            await axios.put(`/api/todos/${selectedTask.id}/`, selectedTask)
             fetchData();
             setSelectedTask(null)
         } catch (error) {
@@ -84,7 +85,7 @@ const App = () => {
 
     const toggleCompleted = async (id) => {
         try {
-            await axios.patch(`/todos/${id}/toggle/`)
+            await axios.patch(`/api/todos/${id}/toggle/`)
             fetchData();
         } catch (error) {
             console.error('Error Encountered: ', error)
@@ -93,7 +94,7 @@ const App = () => {
 
     const deleteItem = async (id) => {
         try {
-            await axios.delete(`/todos/${id}`);
+            await axios.delete(`/api/todos/${id}/`);
             fetchData();
         } catch (error) {
             console.error('Error Encountered: ', error)
@@ -118,7 +119,18 @@ const App = () => {
                         </div>
                     :
                         <div className='new-task'>
-                            <input type="text" name="description" value={newTask.description} onChange={handleInputChange} />
+                            <input 
+                                type="text" 
+                                name="description" 
+                                value={newTask.description} 
+                                onChange={handleInputChange}
+                                placeholder="Enter a new task"
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        addNewItem();
+                                    }
+                                }}
+                            />
                             <div className='btn-container' onClick={addNewItem}>
                                 <FaPlus />
                             </div>
