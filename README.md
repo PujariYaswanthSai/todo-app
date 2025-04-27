@@ -34,7 +34,7 @@ A full-stack Todo application built with Django (backend) and React (frontend).
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/PujariYaswanthSai/todo-app.git
 cd todo-app
 ```
 
@@ -124,4 +124,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Author
 
-Maintained by Pujari Yaswanth Sai
+Maintained by [PujariYaswanthSai](https://github.com/PujariYaswanthSai)
