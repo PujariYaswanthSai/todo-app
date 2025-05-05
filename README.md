@@ -1,7 +1,7 @@
 # Todo Application
 
 A full-stack Todo application built with Django (backend) and React (frontend).
-
+I have used sqlite here because my system is somewhat giving me trouble in my sql.
 ## Features
 
 - Create, read, update, and delete todos
