@@ -74,6 +74,7 @@ The application comes with a pre-configured admin user:
 
 - Username: `admin`
 - Password: `admin123`
+- if this doesn't work u can create a new superuser, and login with using those credentials.
 
 To access the admin interface:
 1. Navigate to http://localhost:8000/admin
